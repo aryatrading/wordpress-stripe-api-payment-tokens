@@ -43,7 +43,7 @@ if (!class_exists('WC_API_Payment_Tokens')) {
             $response = array();
             $parameters = $request->get_params();
 
-            $token = sanitize_text_field($parameters['token']);
+            $token_id = sanitize_text_field($parameters['token']);
             $user_id = sanitize_text_field($parameters['user_id']);
             $gateway_id = sanitize_text_field($parameters['gateway_id']);
             $last4 = sanitize_text_field($parameters['last4']);
@@ -53,7 +53,7 @@ if (!class_exists('WC_API_Payment_Tokens')) {
 
             $error = new WP_Error();
 
-            if (empty($token)) {
+            if (empty($token_id)) {
                 $error->add(400, __("token is required.", 'wc-rest-payment-tokens'), array('status' => 400));
                 return $error;
             }
@@ -69,7 +69,7 @@ if (!class_exists('WC_API_Payment_Tokens')) {
 
             // Build the token
             $token = new WC_Payment_Token_CC();
-            $token->set_token($token); // Token comes from payment processor
+            $token->set_token($token_id); // Token comes from payment processor
             $token->set_gateway_id($gateway_id);
             $token->set_last4($last4);
             $token->set_expiry_year($expiry_year);
