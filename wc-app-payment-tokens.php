@@ -62,3 +62,25 @@ function wc_app_payment_tokens_load()
 }
 
 add_action('plugins_loaded', 'wc_app_payment_tokens_load');
+
+
+add_filter('wc_stripe_generate_payment_request', 'filter_wc_stripe_generate_payment_request_payment_method', 3, 10);
+function filter_wc_stripe_generate_payment_request_payment_method($post_data, $order, $source)
+{
+    if ($source->source && substr($source->source, 0, 2) === "pm") {
+        $post_data['payment_method'] = $source->source;
+    }
+
+    return $post_data;
+}
+
+add_filter('woocommerce_stripe_request_body', 'filter_woocommerce_stripe_request_body_payment_method', 3, 10);
+function filter_woocommerce_stripe_request_body_payment_method($request, $api)
+{
+    if ($request['source'] && substr($request['source'], 0, 2) === "pm") {
+        unset($request['source']);
+        $request['payment_method'] = $request['source'];
+    }
+
+    return $request;
+}
