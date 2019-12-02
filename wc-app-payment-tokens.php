@@ -72,8 +72,6 @@ add_action('plugins_loaded', 'wc_app_payment_tokens_load');
  *  => To do this :
  *      1/ we use the filter `wc_stripe_generate_payment_request` to add an attribute payment_method
  *      2/ With the filter `woocommerce_stripe_request_body` before sending the request if we have a `payment_method` we remove `source` attribute
- *      3/ We must make a manual change in  the file  `woocommerce-gateway-stripe/includes/abstracts/abstract-wc-stripe-payment-gateway.php` > create_and_confirm_intent_for_off_session()
- *          => Add in line 1369 : `if (isset($full_request['payment_method'])) $request['payment_method'] = $full_request['payment_method'];`
  */
 
 add_filter('wc_stripe_generate_payment_request', 'filter_wc_stripe_generate_payment_request_payment_method', 3, 10);
