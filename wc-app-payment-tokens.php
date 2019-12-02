@@ -77,7 +77,7 @@ function filter_wc_stripe_generate_payment_request_payment_method($post_data, $o
 add_filter('woocommerce_stripe_request_body', 'filter_woocommerce_stripe_request_body_payment_method', 3, 10);
 function filter_woocommerce_stripe_request_body_payment_method($request, $api)
 {
-    if ($request['source'] && substr($request['source'], 0, 2) === "pm") {
+    if ($api === "payment_intents" && $request['source'] && substr($request['source'], 0, 2) === "pm") {
         unset($request['source']);
         $request['payment_method'] = $request['source'];
     }
