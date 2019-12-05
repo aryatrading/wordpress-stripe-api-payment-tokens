@@ -101,8 +101,10 @@ function filter_woocommerce_stripe_request_body_payment_method($request, $api)
 
 function remove_woocommerce_subscription_validate_payment_meta_filter()
 {
-    remove_filter('woocommerce_subscription_validate_payment_meta', array('WC_Stripe_Subs_Compat', 'validate_subscription_payment_meta'), 100, 2);
-    remove_filter('woocommerce_subscription_validate_payment_meta', array('WC_Stripe_Sepa_Subs_Compat', 'validate_subscription_payment_meta'), 100, 2);
+    global $stripe_subs_compat;
+    global $stripe_sepa_subs_compat;
+    remove_filter('woocommerce_subscription_validate_payment_meta', array($stripe_subs_compat, 'validate_subscription_payment_meta'), 100, 2);
+    remove_filter('woocommerce_subscription_validate_payment_meta', array($stripe_sepa_subs_compat, 'validate_subscription_payment_meta'), 100, 2);
 }
 
 add_action('after_setup_theme', 'remove_woocommerce_subscription_validate_payment_meta_filter');
